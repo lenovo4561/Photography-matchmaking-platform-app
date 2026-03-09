@@ -1,0 +1,330 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "type": "home",
+      "layout": "foot",
+      "style": {
+        "navigationBarTitleText": "首页",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/index/demo",
+      "type": "home",
+      "style": {
+        "navigationBarTitleText": "请求测试页面",
+        "navigationBarTextStyle": "black",
+        "navigationBarBackgroundColor": "#ffffff",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    {
+      "path": "pages/account/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "我的钱包",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/account/withdraw",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "申请提现",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/auth/login",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/category/gallery",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "分类图库",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/chat/detail",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "聊天",
+        "navigationBarBackgroundColor": "#ededed",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/discover/index",
+      "type": "page",
+      "layout": "foot",
+      "style": {
+        "navigationBarTitleText": "发现",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/distributor/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "分销中心",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/distributor/poster",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "推广海报",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/message/index",
+      "type": "page",
+      "layout": "foot",
+      "style": {
+        "navigationBarTitleText": "消息",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/notification/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "通知消息",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/order/create",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "确认下单",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/order/detail",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "订单详情",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/order/list",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "我的订单",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/order/refund",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "申请退款",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/package/list",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "热门套餐",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/photographer/apply",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "摄影师认证",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/photographer/detail",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "摄影师详情",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/photographer/list",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "找摄影师",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/photographer/manage",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "摄影师中心",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/portfolio/create",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "发布作品集",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/portfolio/detail",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "作品集",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/portfolio/manage",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "作品集管理",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/profile/edit",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "编辑资料",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/profile/index",
+      "type": "page",
+      "layout": "foot",
+      "style": {
+        "navigationBarTitleText": "我的",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/review/create",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "评价订单",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/schedule/manage",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "档期管理",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/search/index",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "搜索",
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/service/create",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "创建套餐",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    },
+    {
+      "path": "pages/service/manage",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "服务套餐",
+        "navigationBarBackgroundColor": "#ffffff",
+        "navigationBarTextStyle": "black"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "摄影匹配平台"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#ff6b35",
+    "borderStyle": "white",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/tab/home.png",
+        "selectedIconPath": "static/tab/homeActive.png"
+      },
+      {
+        "pagePath": "pages/discover/index",
+        "text": "发现",
+        "iconPath": "static/tab/discover.png",
+        "selectedIconPath": "static/tab/discoverActive.png"
+      },
+      {
+        "pagePath": "pages/message/index",
+        "text": "消息",
+        "iconPath": "static/tab/message.png",
+        "selectedIconPath": "static/tab/messageActive.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/tab/profile.png",
+        "selectedIconPath": "static/tab/profileActive.png"
+      }
+    ]
+  },
+  "easycom": {
+    "autoscan": true,
+    "custom": {
+      "^wd-(.*)": "wot-design-uni/components/wd-$1/wd-$1.vue",
+      "^(?!z-paging-refresh|z-paging-load-more)z-paging(.*)": "z-paging/components/z-paging$1/z-paging$1.vue"
+    }
+  },
+  "subPackages": []
+}
