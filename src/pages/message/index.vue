@@ -55,7 +55,6 @@
 </template>
 
 <script setup lang="ts">
-import { getSessionsApi } from '@/api/photoApi'
 import { connectSocket, onMessage } from '@/utils/socket'
 import { useUserStore, useMessageStore } from '@/store'
 
@@ -73,16 +72,11 @@ const syncUnread = () => {
 }
 
 onShow(() => {
-  const token = uni.getStorageSync('token')
-  if (!token) {
-    uni.navigateTo({ url: '/pages/auth/login' })
-    return
-  }
   fetchSessions()
 
   // H5 实时监听新消息，更新会话列表
   // #ifdef H5
-  connectSocket(token)
+  connectSocket(uni.getStorageSync('token'))
     .then(() => {
       if (cleanupSocket) {
         cleanupSocket()
@@ -120,18 +114,66 @@ onHide(() => {
   }
 })
 
-const fetchSessions = async () => {
-  loading.value = true
-  error.value = false
-  try {
-    const res = await getSessionsApi()
-    sessions.value = res?.data || []
-    syncUnread()
-  } catch (e) {
-    error.value = true
-  } finally {
-    loading.value = false
+// 演示用写死会话数据，头像使用远程真实人物图片
+const MOCK_SESSIONS = [
+  {
+    sessionId: 1001,
+    otherUserId: 101,
+    unreadCount: 2,
+    otherUser: { nickname: '林晓雨', avatar: 'https://i.pravatar.cc/240?img=47' },
+    lastMessage: {
+      msgType: 'text',
+      content: '您好，想咨询一下写真套餐的具体内容',
+      createdAt: new Date(Date.now() - 5 * 60000).toISOString()
+    }
+  },
+  {
+    sessionId: 1002,
+    otherUserId: 102,
+    unreadCount: 0,
+    otherUser: { nickname: '张明远', avatar: 'https://i.pravatar.cc/240?img=11' },
+    lastMessage: {
+      msgType: 'text',
+      content: '好的，档期已确认，期待和您合作！',
+      createdAt: new Date(Date.now() - 2 * 3600000).toISOString()
+    }
+  },
+  {
+    sessionId: 1003,
+    otherUserId: 103,
+    unreadCount: 1,
+    otherUser: { nickname: '陈志豪', avatar: 'https://i.pravatar.cc/240?img=12' },
+    lastMessage: { msgType: 'image', content: '', createdAt: new Date(Date.now() - 5 * 3600000).toISOString() }
+  },
+  {
+    sessionId: 1004,
+    otherUserId: 104,
+    unreadCount: 0,
+    otherUser: { nickname: '苏沐阳', avatar: 'https://i.pravatar.cc/240?img=48' },
+    lastMessage: {
+      msgType: 'text',
+      content: '样片已发给您，请查收～',
+      createdAt: new Date(Date.now() - 86400000).toISOString()
+    }
+  },
+  {
+    sessionId: 1005,
+    otherUserId: 105,
+    unreadCount: 0,
+    otherUser: { nickname: '周梦琪', avatar: 'https://i.pravatar.cc/240?img=44' },
+    lastMessage: {
+      msgType: 'text',
+      content: '毕业照拍摄地点我们可以去图书馆，那里光线最好',
+      createdAt: new Date(Date.now() - 2 * 86400000).toISOString()
+    }
   }
+]
+
+const fetchSessions = () => {
+  loading.value = true
+  sessions.value = MOCK_SESSIONS
+  syncUnread()
+  loading.value = false
 }
 
 const formatTime = (timeStr: string) => {

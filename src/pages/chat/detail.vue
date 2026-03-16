@@ -160,8 +160,7 @@ onMounted(async () => {
   uni.setNavigationBarTitle({ title: otherName })
 
   if (!receiverId) return
-  const selfId = userStore.userInfo?.id
-  if (!selfId) return
+  const selfId = userStore.userInfo?.id || 1001
   currentSessionId = buildSessionId(Number(selfId), Number(receiverId))
   try {
     const res = await getMessageHistoryApi(currentSessionId)
@@ -172,6 +171,47 @@ onMounted(async () => {
     }))
     scrollToBottom()
   } catch {}
+
+  // DEMO 模式注入 mock 对话
+  if (import.meta.env.VITE_DEMO === 'true' && messages.value.length === 0) {
+    const now = new Date().toISOString()
+    messages.value = [
+      {
+        id: 1,
+        msgType: 'text',
+        content: '您好！我想了解一下您的写真套餐详情',
+        senderId: selfId,
+        isSelf: true,
+        createdAt: now
+      },
+      {
+        id: 2,
+        msgType: 'text',
+        content: '您好！我们有日系清新、复古胶片等多种风格，2小时外景拍摄，精修50张，欢迎了解～',
+        senderId: Number(receiverId),
+        isSelf: false,
+        createdAt: now
+      },
+      { id: 3, msgType: 'text', content: '价格是多少呢？', senderId: selfId, isSelf: true, createdAt: now },
+      {
+        id: 4,
+        msgType: 'text',
+        content: '基础套餐599元起，包含妆造指导，可以先预约档期，15天内随时可拍',
+        senderId: Number(receiverId),
+        isSelf: false,
+        createdAt: now
+      },
+      {
+        id: 5,
+        msgType: 'text',
+        content: '好的，我再考虑一下，到时候联系您！',
+        senderId: selfId,
+        isSelf: true,
+        createdAt: now
+      }
+    ]
+    scrollToBottom()
+  }
 
   // #ifdef H5
   // 实时监听新消息（只处理当前会话的消息）

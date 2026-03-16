@@ -129,11 +129,6 @@ const onSwiperChange = (e: any) => {
 }
 
 const toggleLike = async () => {
-  const token = uni.getStorageSync('token')
-  if (!token) {
-    uni.navigateTo({ url: '/pages/auth/login' })
-    return
-  }
   try {
     const res = await likePortfolioApi(portfolio.value.id)
     portfolio.value.isLiked = res?.data?.liked
@@ -142,11 +137,6 @@ const toggleLike = async () => {
 }
 
 const unlockPortfolio = async () => {
-  const token = uni.getStorageSync('token')
-  if (!token) {
-    uni.navigateTo({ url: '/pages/auth/login' })
-    return
-  }
   uni.showModal({
     title: '确认解锁',
     content: `解锁此作品集需支付 ¥${portfolio.value.price}，将从账户余额扣除`,
@@ -167,11 +157,6 @@ const unlockPortfolio = async () => {
 
 const goPhotographer = () => uni.navigateTo({ url: `/pages/photographer/detail?id=${portfolio.value?.photographerId}` })
 const goChat = () => {
-  const token = uni.getStorageSync('token')
-  if (!token) {
-    uni.navigateTo({ url: '/pages/auth/login' })
-    return
-  }
   const p = portfolio.value?.photographer
   uni.navigateTo({ url: `/pages/chat/detail?userId=${p?.userId}&name=${p?.user?.nickname}` })
 }

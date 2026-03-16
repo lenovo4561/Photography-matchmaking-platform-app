@@ -13,6 +13,7 @@ import { useUserStore } from '@/store'
 import { getPermissionKeysByPath } from '@/utils'
 
 const loginRoute = '/pages/routerDemo/login'
+const IS_DEMO = import.meta.env.VITE_DEMO === 'true'
 
 // 获取用户权限标识
 const getUserPermissionKeys = () => {
@@ -27,6 +28,8 @@ const getUserPermissionKeys = () => {
  **/
 const navigateToInterceptor = {
   invoke({ url }: { url: string }) {
+    // 演示模式：跳过所有权限检查，任意页面均可跳转
+    if (IS_DEMO) return true
     // 'pages.json' 里面的 path 是 'pages/index/index'
     // url 如果带参数则是 /pages/route-interceptor/index?name=uni-lin，所以需要去掉带的参数、去掉前面的 /
     const path = url.split('?')[0].slice(1) // pages/index/index

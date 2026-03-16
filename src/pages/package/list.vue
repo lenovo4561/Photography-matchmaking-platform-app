@@ -1,4 +1,4 @@
-<route lang="json5">
+﻿<route lang="json5">
 {
   style: {
     navigationBarTitleText: '热门套餐',
@@ -174,7 +174,7 @@ const packages = ref([
     title: '日系胶片写真套餐',
     description: '精选日系胶片风格，城市取景+室内棚拍两场景，专业灯光+后期精修',
     highlights: ['2小时拍摄', '精修30张', '2套服装', '含妆造'],
-    coverImage: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80',
+    coverImage: 'https://picsum.photos/seed/portrait/400/260',
     price: 688,
     originalPrice: 888,
     discountRate: '7',
@@ -184,7 +184,7 @@ const packages = ref([
     isNew: false,
     photographer: {
       name: '林晓雨',
-      avatar: 'https://i.pravatar.cc/80?img=1',
+      avatar: 'https://i.pravatar.cc/240?img=47',
       level: '金牌摄影师',
       score: 4.9,
       orders: 842
@@ -196,7 +196,7 @@ const packages = ref([
     title: '婚礼全程跟拍套餐',
     description: '婚礼全天候跟拍，双机位拍摄，精修500张，制作相册一本，永久云存储',
     highlights: ['全天跟拍8h', '双机位', '精修500张', '赠精装相册'],
-    coverImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80',
+    coverImage: 'https://picsum.photos/seed/wedding/400/260',
     price: 3888,
     originalPrice: 5800,
     discountRate: '6',
@@ -206,7 +206,7 @@ const packages = ref([
     isNew: false,
     photographer: {
       name: '周浩',
-      avatar: 'https://i.pravatar.cc/80?img=13',
+      avatar: 'https://i.pravatar.cc/240?img=473',
       level: '铂金摄影师',
       score: 5.0,
       orders: 623
@@ -218,7 +218,7 @@ const packages = ref([
     title: '清新户外写真套餐',
     description: '城市公园取景，清新自然风格，胶片质感后期，适合25岁以下年轻女性',
     highlights: ['3小时拍摄', '精修50张', '不限服装', '2个取景地'],
-    coverImage: 'https://images.unsplash.com/photo-1524502397800-2eeaad7c3fe5?w=600&q=80',
+    coverImage: 'https://picsum.photos/seed/portrait/400/260',
     price: 398,
     originalPrice: 598,
     discountRate: '6',
@@ -228,7 +228,7 @@ const packages = ref([
     isNew: true,
     photographer: {
       name: '陈思远',
-      avatar: 'https://i.pravatar.cc/80?img=2',
+      avatar: 'https://i.pravatar.cc/240?img=11',
       level: '银牌摄影师',
       score: 4.7,
       orders: 389
@@ -240,7 +240,7 @@ const packages = ref([
     title: '企业团队形象拍摄',
     description: '适合10-50人团队，企业文化照+个人形象照，提供专业布景，当天出样片',
     highlights: ['半天拍摄4h', '个人10张精修', '团队合照5张', '含简单化妆'],
-    coverImage: 'https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=600&q=80',
+    coverImage: 'https://picsum.photos/seed/commercial/400/260',
     price: 2980,
     originalPrice: 3980,
     discountRate: '7',
@@ -250,7 +250,7 @@ const packages = ref([
     isNew: false,
     photographer: {
       name: '魏大勇',
-      avatar: 'https://i.pravatar.cc/80?img=25',
+      avatar: 'https://i.pravatar.cc/240?img=115',
       level: '商业摄影师',
       score: 4.8,
       orders: 267
@@ -262,7 +262,7 @@ const packages = ref([
     title: '全家福&亲子写真套餐',
     description: '儿童专属场景布置，互动式拍摄，让孩子开心玩耍中留下珍贵回忆',
     highlights: ['2小时拍摄', '精修40张', '儿童道具', '含宝宝造型'],
-    coverImage: 'https://images.unsplash.com/photo-1511765224389-37f0e77cf0eb?w=600&q=80',
+    coverImage: 'https://picsum.photos/seed/family/400/260',
     price: 1280,
     originalPrice: 1680,
     discountRate: '7',
@@ -272,7 +272,7 @@ const packages = ref([
     isNew: false,
     photographer: {
       name: '钟晓燕',
-      avatar: 'https://i.pravatar.cc/80?img=37',
+      avatar: 'https://i.pravatar.cc/240?img=127',
       level: '金牌摄影师',
       score: 4.9,
       orders: 534
@@ -284,7 +284,7 @@ const packages = ref([
     title: '毕业季写真套餐',
     description: '校园青春纪念，学士服+汉服双LOOK，记录最美毕业季',
     highlights: ['3小时拍摄', '精修40张', '2套服装换装', '含学士帽道具'],
-    coverImage: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&q=80',
+    coverImage: 'https://picsum.photos/seed/graduation/400/260',
     price: 588,
     originalPrice: 788,
     discountRate: '7',
@@ -294,7 +294,7 @@ const packages = ref([
     isNew: false,
     photographer: {
       name: '刘子骏',
-      avatar: 'https://i.pravatar.cc/80?img=51',
+      avatar: 'https://i.pravatar.cc/240?img=441',
       level: '银牌摄影师',
       score: 4.8,
       orders: 477
@@ -306,7 +306,7 @@ const packages = ref([
     title: '云南旅拍套餐（2天1夜）',
     description: '大理、洱海、古城经典打卡地，摄影师随行拍摄，让你专注享受旅行',
     highlights: ['2天随行拍摄', '精修100张', '3个经典取景地', '含接送服务'],
-    coverImage: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=600&q=80',
+    coverImage: 'https://picsum.photos/seed/travel/400/260',
     price: 2580,
     originalPrice: 3200,
     discountRate: '8',
@@ -316,7 +316,7 @@ const packages = ref([
     isNew: false,
     photographer: {
       name: '白志远',
-      avatar: 'https://i.pravatar.cc/80?img=1',
+      avatar: 'https://i.pravatar.cc/240?img=47',
       level: '旅拍专家',
       score: 4.9,
       orders: 312
@@ -328,7 +328,7 @@ const packages = ref([
     title: '电商产品精拍套餐（20件）',
     description: '白底主图+场景图拍摄，支持多种产品类型，1-3个工作日交付，含基础修图',
     highlights: ['20件产品拍摄', '每件5-8张视角', '白底+场景各一', '含基础精修'],
-    coverImage: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&q=80',
+    coverImage: 'https://picsum.photos/seed/product/400/260',
     price: 1980,
     originalPrice: 2600,
     discountRate: '7',
@@ -338,7 +338,7 @@ const packages = ref([
     isNew: true,
     photographer: {
       name: '柴静',
-      avatar: 'https://i.pravatar.cc/80?img=25',
+      avatar: 'https://i.pravatar.cc/240?img=115',
       level: '商业摄影师',
       score: 4.7,
       orders: 556
@@ -350,7 +350,7 @@ const packages = ref([
     title: '企业年会活动跟拍套餐',
     description: '年会全程记录，舞台表演+互动环节+颁奖仪式，专业摄影+摄像双机位',
     highlights: ['全场活动跟拍', '含摄像剪辑5min', '精修200张', '当晚出精选100张'],
-    coverImage: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80',
+    coverImage: 'https://picsum.photos/seed/event/400/260',
     price: 4800,
     originalPrice: 6000,
     discountRate: '8',
@@ -360,7 +360,7 @@ const packages = ref([
     isNew: false,
     photographer: {
       name: '黄海冰',
-      avatar: 'https://i.pravatar.cc/80?img=13',
+      avatar: 'https://i.pravatar.cc/240?img=473',
       level: '商业摄影师',
       score: 4.8,
       orders: 189
@@ -372,7 +372,7 @@ const packages = ref([
     title: '高端棚拍写真套餐',
     description: '专业影棚多套背景随意选，配备专业灯光组，多种风格：商务/艺术/时尚',
     highlights: ['3小时棚拍', '精修60张', '5套灯光方案', '专业妆造'],
-    coverImage: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&q=80',
+    coverImage: 'https://picsum.photos/seed/portrait/400/260',
     price: 1288,
     originalPrice: 1888,
     discountRate: '6',
@@ -382,7 +382,7 @@ const packages = ref([
     isNew: true,
     photographer: {
       name: '李浩然',
-      avatar: 'https://i.pravatar.cc/80?img=5',
+      avatar: 'https://i.pravatar.cc/240?img=44',
       level: '金牌摄影师',
       score: 4.9,
       orders: 712

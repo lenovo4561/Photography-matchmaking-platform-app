@@ -39,6 +39,7 @@
             </view>
             <text class="p-tags">{{ p.styleTags }}</text>
             <text class="p-city">📍 {{ p.serviceCity }}</text>
+            <text class="p-bio">{{ p.bio }}</text>
             <view class="p-stats">
               <text class="p-score">⭐ {{ p.avgScore }}</text>
               <text class="p-orders">{{ p.orderCount }} 单</text>
@@ -107,7 +108,25 @@
 </template>
 
 <script setup lang="ts">
-import { getPhotographerListApi } from '@/api/photoApi'
+type PhotographerItem = {
+  id: number
+  userId: number
+  certStatus: number
+  category: string
+  canVisit: boolean
+  canUrgent: boolean
+  styleTags: string
+  serviceCity: string
+  avgScore: number
+  orderCount: number
+  minPrice: number
+  bio: string
+  covers: string[]
+  user: {
+    nickname: string
+    avatar: string
+  }
+}
 
 const list = ref<any[]>([])
 const page = ref(1)
@@ -128,178 +147,160 @@ const categories = [
   { key: 'travel', label: '旅拍' }
 ]
 
-// ── 本地 Mock 数据（后端无数据时兜底展示）──────────────────────────────
-const MOCK_LIST = [
+// ── 演示数据（头像/封面全部使用远程图片，不占本地包体积）────────────────
+const LOCAL_PHOTOGRAPHERS: PhotographerItem[] = [
   {
-    id: 1,
-    userId: 1,
+    id: 101,
+    userId: 101,
     certStatus: 2,
-    styleTags: '人像写真,小清新,胶片',
-    serviceCity: '北京',
+    category: 'portrait',
+    canVisit: true,
+    canUrgent: true,
+    styleTags: '人像写真 / 清新自然 / 氛围感',
+    serviceCity: '杭州',
     avgScore: 4.9,
-    orderCount: 328,
-    minPrice: 599,
-    covers: ['/static/mock/cover_portrait.png', '/static/mock/cover_wedding.png', '/static/mock/cover_travel.png'],
-    user: { nickname: '林晓雨', avatar: '/static/mock/avatar1.png' }
+    orderCount: 286,
+    minPrice: 699,
+    bio: '擅长自然光人像与城市轻写真，适合生日照、情侣照和个人形象照。',
+    covers: [
+      'https://picsum.photos/seed/portrait1/400/260',
+      'https://picsum.photos/seed/portrait2/400/260',
+      'https://picsum.photos/seed/portrait3/400/260'
+    ],
+    user: { nickname: '林晓雨', avatar: 'https://i.pravatar.cc/240?img=47' }
   },
   {
-    id: 2,
-    userId: 2,
+    id: 102,
+    userId: 102,
     certStatus: 2,
-    styleTags: '婚礼跟拍,纪实,轻奢',
+    category: 'wedding',
+    canVisit: true,
+    canUrgent: false,
+    styleTags: '婚礼跟拍 / 纪实抓拍 / 仪式感',
     serviceCity: '上海',
     avgScore: 4.8,
-    orderCount: 215,
-    minPrice: 1280,
-    covers: ['/static/mock/cover_wedding.png', '/static/mock/cover_portrait.png', '/static/mock/cover_family.png'],
-    user: { nickname: '张明远', avatar: '/static/mock/avatar2.png' }
-  },
-  {
-    id: 3,
-    userId: 3,
-    certStatus: 2,
-    styleTags: '商业广告,产品,建筑',
-    serviceCity: '广州',
-    avgScore: 4.7,
-    orderCount: 180,
-    minPrice: 800,
-    covers: ['/static/mock/cover_commercial.png', '/static/mock/cover_product.png', '/static/mock/cover_event.png'],
-    user: { nickname: '陈志豪', avatar: '/static/mock/avatar3.png' }
-  },
-  {
-    id: 4,
-    userId: 4,
-    certStatus: 0,
-    styleTags: '旅拍,风光,极简',
-    serviceCity: '成都',
-    avgScore: 4.9,
     orderCount: 412,
-    minPrice: 450,
-    covers: ['/static/mock/cover_travel.png', '/static/mock/cover_portrait.png', '/static/mock/cover_graduation.png'],
-    user: { nickname: '苏沐阳', avatar: '/static/mock/avatar4.png' }
+    minPrice: 1699,
+    bio: '专注婚礼全天跟拍，擅长捕捉新人与家人之间自然真实的情绪瞬间。',
+    covers: [
+      'https://picsum.photos/seed/wedding1/400/260',
+      'https://picsum.photos/seed/wedding2/400/260',
+      'https://picsum.photos/seed/wedding3/400/260'
+    ],
+    user: { nickname: '张明远', avatar: 'https://i.pravatar.cc/240?img=11' }
   },
   {
-    id: 5,
-    userId: 5,
+    id: 103,
+    userId: 103,
     certStatus: 2,
-    styleTags: '亲子家庭,儿童,纪实',
-    serviceCity: '杭州',
-    avgScore: 4.6,
-    orderCount: 97,
-    minPrice: 680,
-    covers: ['/static/mock/cover_family.png', '/static/mock/cover_portrait.png', '/static/mock/cover_travel.png'],
-    user: { nickname: '周梦琪', avatar: '/static/mock/avatar5.png' }
-  },
-  {
-    id: 6,
-    userId: 6,
-    certStatus: 2,
-    styleTags: '毕业纪念,校园,青春',
-    serviceCity: '南京',
-    avgScore: 4.7,
-    orderCount: 156,
-    minPrice: 380,
-    covers: ['/static/mock/cover_graduation.png', '/static/mock/cover_portrait.png', '/static/mock/cover_family.png'],
-    user: { nickname: '王宇轩', avatar: '/static/mock/avatar6.png' }
-  },
-  {
-    id: 7,
-    userId: 7,
-    certStatus: 2,
-    styleTags: '活动会议,企业,演出',
+    category: 'commercial',
+    canVisit: true,
+    canUrgent: true,
+    styleTags: '商业广告 / 产品静物 / 品牌视觉',
     serviceCity: '深圳',
-    avgScore: 4.5,
-    orderCount: 263,
-    minPrice: 600,
-    covers: ['/static/mock/cover_event.png', '/static/mock/cover_commercial.png', '/static/mock/cover_product.png'],
-    user: { nickname: '刘思远', avatar: '/static/mock/avatar7.png' }
-  },
-  {
-    id: 8,
-    userId: 8,
-    certStatus: 0,
-    styleTags: '产品拍摄,静物,电商',
-    serviceCity: '武汉',
-    avgScore: 4.8,
-    orderCount: 189,
-    minPrice: 350,
-    covers: ['/static/mock/cover_product.png', '/static/mock/cover_commercial.png', '/static/mock/cover_event.png'],
-    user: { nickname: '赵佳宁', avatar: '/static/mock/avatar8.png' }
-  },
-  {
-    id: 9,
-    userId: 9,
-    certStatus: 2,
-    styleTags: '人像写真,日系,复古',
-    serviceCity: '西安',
     avgScore: 4.9,
-    orderCount: 301,
-    minPrice: 520,
-    covers: ['/static/mock/cover_portrait.png', '/static/mock/cover_travel.png', '/static/mock/cover_graduation.png'],
-    user: { nickname: '吴晴晴', avatar: '/static/mock/avatar9.png' }
+    orderCount: 198,
+    minPrice: 1200,
+    bio: '服务品牌宣传、电商产品和门店视觉升级，画面干净利落，交付稳定。',
+    covers: [
+      'https://picsum.photos/seed/commercial1/400/260',
+      'https://picsum.photos/seed/commercial2/400/260',
+      'https://picsum.photos/seed/commercial3/400/260'
+    ],
+    user: { nickname: '陈志豪', avatar: 'https://i.pravatar.cc/240?img=12' }
   },
   {
-    id: 10,
-    userId: 10,
+    id: 104,
+    userId: 104,
     certStatus: 2,
-    styleTags: '婚礼跟拍,中式,唯美',
+    category: 'family',
+    canVisit: true,
+    canUrgent: false,
+    styleTags: '亲子家庭 / 温馨纪实 / 成长记录',
     serviceCity: '成都',
-    avgScore: 4.7,
-    orderCount: 134,
-    minPrice: 1500,
-    covers: ['/static/mock/cover_wedding.png', '/static/mock/cover_portrait.png', '/static/mock/cover_travel.png'],
-    user: { nickname: '何子俊', avatar: '/static/mock/avatar10.png' }
-  },
-  {
-    id: 11,
-    userId: 11,
-    certStatus: 0,
-    styleTags: '旅拍,人文,纪实',
-    serviceCity: '重庆',
-    avgScore: 4.6,
-    orderCount: 78,
-    minPrice: 400,
-    covers: ['/static/mock/cover_travel.png', '/static/mock/cover_event.png', '/static/mock/cover_family.png'],
-    user: { nickname: '郑欣悦', avatar: '/static/mock/avatar11.png' }
-  },
-  {
-    id: 12,
-    userId: 12,
-    certStatus: 2,
-    styleTags: '商业广告,时尚,室内',
-    serviceCity: '北京',
     avgScore: 4.8,
-    orderCount: 224,
-    minPrice: 900,
-    covers: ['/static/mock/cover_commercial.png', '/static/mock/cover_product.png', '/static/mock/cover_portrait.png'],
-    user: { nickname: '孟浩然', avatar: '/static/mock/avatar12.png' }
+    orderCount: 305,
+    minPrice: 888,
+    bio: '偏爱真实互动与轻引导拍摄，让家庭照片保留陪伴感与生活温度。',
+    covers: [
+      'https://picsum.photos/seed/family1/400/260',
+      'https://picsum.photos/seed/family2/400/260',
+      'https://picsum.photos/seed/family3/400/260'
+    ],
+    user: { nickname: '苏沐阳', avatar: 'https://i.pravatar.cc/240?img=48' }
+  },
+  {
+    id: 105,
+    userId: 105,
+    certStatus: 2,
+    category: 'graduation',
+    canVisit: false,
+    canUrgent: true,
+    styleTags: '毕业纪念 / 校园写真 / 青春感',
+    serviceCity: '武汉',
+    avgScore: 4.7,
+    orderCount: 154,
+    minPrice: 520,
+    bio: '熟悉校园取景和毕业季氛围营造，适合宿舍、操场、图书馆等场景拍摄。',
+    covers: [
+      'https://picsum.photos/seed/grad1/400/260',
+      'https://picsum.photos/seed/grad2/400/260',
+      'https://picsum.photos/seed/grad3/400/260'
+    ],
+    user: { nickname: '周梦琪', avatar: 'https://i.pravatar.cc/240?img=44' }
+  },
+  {
+    id: 106,
+    userId: 106,
+    certStatus: 2,
+    category: 'travel',
+    canVisit: true,
+    canUrgent: true,
+    styleTags: '旅拍 / 风光纪实 / 松弛氛围',
+    serviceCity: '大理',
+    avgScore: 5.0,
+    orderCount: 267,
+    minPrice: 999,
+    bio: '擅长旅行轻写真与目的地旅拍，帮助用户拍出松弛自然的在地感大片。',
+    covers: [
+      'https://picsum.photos/seed/travel1/400/260',
+      'https://picsum.photos/seed/travel2/400/260',
+      'https://picsum.photos/seed/travel3/400/260'
+    ],
+    user: { nickname: '何子俊', avatar: 'https://i.pravatar.cc/240?img=15' }
   }
 ]
-// ────────────────────────────────────────────────────────────────────────────
 
 onMounted(() => fetchList(true))
 
-const fetchList = async (reset = false) => {
+const fetchList = (reset = false) => {
   if (loading.value) return
   loading.value = true
-  try {
-    const params: any = { page: page.value, pageSize: 15, orderBy: orderBy.value }
-    if (keyword.value) params.keyword = keyword.value
-    if (filterForm.category) params.category = filterForm.category
-    if (filterForm.canVisit) params.canVisit = 1
-    if (filterForm.canUrgent) params.canUrgent = 1
-    const res = await getPhotographerListApi(params)
-    let data = res?.data?.list || []
-    // API 无数据时用本地 mock 兜底（仅第一页且未搜索/筛选时）
-    if (data.length === 0 && reset && page.value === 1 && !keyword.value && !filterForm.category) {
-      data = MOCK_LIST
-    }
-    if (reset) list.value = data
-    else list.value.push(...data)
-    if (data.length < 15) noMore.value = true
-  } finally {
-    loading.value = false
+  let data = [...LOCAL_PHOTOGRAPHERS]
+  // 支持关键字搜索
+  if (keyword.value) {
+    const kw = keyword.value.toLowerCase()
+    data = data.filter(
+      p =>
+        p.user?.nickname?.toLowerCase().includes(kw) ||
+        p.styleTags?.toLowerCase().includes(kw) ||
+        p.serviceCity?.toLowerCase().includes(kw) ||
+        p.bio?.toLowerCase().includes(kw)
+    )
   }
+  // 支持分类筛选
+  if (filterForm.category) {
+    data = data.filter(p => p.category === filterForm.category)
+  }
+  if (filterForm.canVisit) data = data.filter(p => p.canVisit)
+  if (filterForm.canUrgent) data = data.filter(p => p.canUrgent)
+  // 支持排序
+  if (orderBy.value === 'score') data.sort((a, b) => b.avgScore - a.avgScore)
+  else if (orderBy.value === 'orderCount') data.sort((a, b) => b.orderCount - a.orderCount)
+  else if (orderBy.value === 'price') data.sort((a, b) => a.minPrice - b.minPrice)
+  list.value = data
+  noMore.value = true
+  loading.value = false
 }
 
 let searchTimer: any = null
@@ -338,11 +339,6 @@ const applyFilter = () => {
 
 const goDetail = (id: number) => uni.navigateTo({ url: `/pages/photographer/detail?id=${id}` })
 const goChat = (p: any) => {
-  const token = uni.getStorageSync('token')
-  if (!token) {
-    uni.navigateTo({ url: '/pages/auth/login' })
-    return
-  }
   uni.navigateTo({ url: `/pages/chat/detail?userId=${p.userId}&name=${p.user?.nickname}` })
 }
 </script>
@@ -455,7 +451,15 @@ const goChat = (p: any) => {
           display: block;
           font-size: 24rpx;
           color: #666;
-          margin-bottom: 10rpx;
+          margin-bottom: 8rpx;
+        }
+
+        .p-bio {
+          display: block;
+          font-size: 23rpx;
+          color: #888;
+          line-height: 1.5;
+          margin-bottom: 12rpx;
         }
 
         .p-stats {

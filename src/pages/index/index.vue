@@ -85,12 +85,23 @@
       <view class="section-header">
         <text class="section-title">优质作品</text>
       </view>
-      <view class="portfolio-grid">
-        <view class="portfolio-item" v-for="p in portfolios" :key="p.id" @click="goPortfolio(p.id)">
-          <image :src="p.coverImage || '/static/default-cover.png'" mode="aspectFill" class="portfolio-img" />
-          <view class="portfolio-meta">
-            <text class="portfolio-title">{{ p.title }}</text>
-            <text class="portfolio-like">❤ {{ p.likeCount }}</text>
+      <view class="portfolio-columns">
+        <view class="portfolio-col">
+          <view class="portfolio-item" v-for="p in leftPortfolios" :key="p.id" @click="goPortfolio(p.id)">
+            <image :src="p.coverImage || '/static/default-cover.png'" mode="aspectFill" class="portfolio-img" />
+            <view class="portfolio-meta">
+              <text class="portfolio-title">{{ p.title }}</text>
+              <text class="portfolio-like">❤ {{ p.likeCount }}</text>
+            </view>
+          </view>
+        </view>
+        <view class="portfolio-col">
+          <view class="portfolio-item" v-for="p in rightPortfolios" :key="p.id" @click="goPortfolio(p.id)">
+            <image :src="p.coverImage || '/static/default-cover.png'" mode="aspectFill" class="portfolio-img" />
+            <view class="portfolio-meta">
+              <text class="portfolio-title">{{ p.title }}</text>
+              <text class="portfolio-like">❤ {{ p.likeCount }}</text>
+            </view>
           </view>
         </view>
       </view>
@@ -104,13 +115,7 @@
 </template>
 
 <script setup lang="ts">
-import {
-  getPhotographerListApi,
-  getServiceListApi,
-  getPortfolioListApi,
-  getBannersApi,
-  getCategoriesApi
-} from '@/api/photoApi'
+import { MOCK_PHOTOGRAPHERS, MOCK_PORTFOLIOS_ALL, MOCK_SERVICES, MOCK_BANNERS, MOCK_CATEGORIES } from '@/mock/data'
 import { useUserStore } from '@/store'
 
 const userStore = useUserStore()
@@ -120,63 +125,22 @@ const portfolios = ref<any[]>([])
 const loadingMore = ref(false)
 const portfolioPage = ref(1)
 
-// 默认兜底数据（接口失败时使用）
+// 默认兜底数据（全部使用本地图片，不依赖外网）
 const DEFAULT_BANNERS = [
-  {
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=750&auto=format&fit=crop&q=80',
-    title: '婚礼跟拍 · 见证最美时刻'
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1554080353-a576cf803bda?w=750&auto=format&fit=crop&q=80',
-    title: '专业写真 · 定格美好瞬间'
-  },
-  {
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=750&auto=format&fit=crop&q=80',
-    title: '商业拍摄 · 让产品更出彩'
-  }
+  { image: 'https://picsum.photos/seed/banner1/750/300', title: '婚礼跟拍 · 见证最美时刻' },
+  { image: 'https://picsum.photos/seed/banner2/750/300', title: '专业写真 · 定格美好瞬间' },
+  { image: 'https://picsum.photos/seed/banner3/750/300', title: '商业拍摄 · 让产品更出彩' }
 ]
 
 const DEFAULT_CATEGORIES = [
-  {
-    key: 'portrait',
-    image: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=200&auto=format&fit=crop&q=80',
-    label: '个人写真'
-  },
-  {
-    key: 'wedding',
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=200&auto=format&fit=crop&q=80',
-    label: '婚礼跟拍'
-  },
-  {
-    key: 'commercial',
-    image: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=200&auto=format&fit=crop&q=80',
-    label: '商业拍摄'
-  },
-  {
-    key: 'family',
-    image: 'https://images.unsplash.com/photo-1609220136736-443140cffec6?w=200&auto=format&fit=crop&q=80',
-    label: '亲子家庭'
-  },
-  {
-    key: 'graduation',
-    image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=200&auto=format&fit=crop&q=80',
-    label: '毕业照'
-  },
-  {
-    key: 'travel',
-    image: 'https://images.unsplash.com/photo-1500051638674-ff996a0ec29e?w=200&auto=format&fit=crop&q=80',
-    label: '旅拍'
-  },
-  {
-    key: 'event',
-    image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=200&auto=format&fit=crop&q=80',
-    label: '活动会议'
-  },
-  {
-    key: 'product',
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&auto=format&fit=crop&q=80',
-    label: '产品拍摄'
-  }
+  { key: 'portrait', image: 'https://picsum.photos/seed/japanese-portrait/400/260', label: '日系清新' },
+  { key: 'wedding', image: 'https://picsum.photos/seed/european-wedding/400/260', label: '欧美婚礼' },
+  { key: 'commercial', image: 'https://picsum.photos/seed/vintage-fashion/400/260', label: '复古胶片' },
+  { key: 'family', image: 'https://picsum.photos/seed/fresh-family/400/260', label: '小清新' },
+  { key: 'graduation', image: 'https://picsum.photos/seed/campus-youth/400/260', label: '校园青春' },
+  { key: 'travel', image: 'https://picsum.photos/seed/mori-travel/400/260', label: '森系旅拍' },
+  { key: 'event', image: 'https://picsum.photos/seed/hongkong-night/400/260', label: '港风夜景' },
+  { key: 'product', image: 'https://picsum.photos/seed/korean-minimal/400/260', label: '韩系极简' }
 ]
 
 const banners = ref<any[]>(DEFAULT_BANNERS)
@@ -186,141 +150,95 @@ onMounted(async () => {
   loadData()
 })
 
-// ========== 推荐摄影师演示数据 ==========
+// ========== 推荐摄影师演示数据（本地图片） ==========
 const mockPhotographers = [
   {
-    id: 'mp1',
+    id: 1,
     avgScore: 4.9,
     orderCount: 386,
     styleTags: '人像写真 · 日系清新',
-    user: {
-      nickname: '林晓薇',
-      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=160&auto=format&fit=crop&q=80'
-    }
+    user: { nickname: '林晓雨', avatar: 'https://i.pravatar.cc/240?img=47' }
   },
   {
-    id: 'mp2',
+    id: 2,
     avgScore: 4.8,
     orderCount: 512,
     styleTags: '婚礼跟拍 · 纪实温情',
-    user: {
-      nickname: '陈俊豪',
-      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=160&auto=format&fit=crop&q=80'
-    }
+    user: { nickname: '张明远', avatar: 'https://i.pravatar.cc/240?img=11' }
   },
   {
-    id: 'mp3',
+    id: 3,
     avgScore: 4.9,
     orderCount: 274,
     styleTags: '商业广告 · 时尚大片',
-    user: {
-      nickname: '张雅琴',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=160&auto=format&fit=crop&q=80'
-    }
+    user: { nickname: '陈志豪', avatar: 'https://i.pravatar.cc/240?img=12' }
   },
   {
-    id: 'mp4',
+    id: 4,
     avgScore: 4.7,
     orderCount: 198,
     styleTags: '亲子家庭 · 温馨记录',
-    user: {
-      nickname: '王建国',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=160&auto=format&fit=crop&q=80'
-    }
+    user: { nickname: '苏沐阳', avatar: 'https://i.pravatar.cc/240?img=48' }
   },
   {
-    id: 'mp5',
+    id: 5,
     avgScore: 5.0,
     orderCount: 632,
     styleTags: '旅拍纪实 · 人文风光',
-    user: {
-      nickname: '李梦婷',
-      avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=160&auto=format&fit=crop&q=80'
-    }
+    user: { nickname: '周梦琪', avatar: 'https://i.pravatar.cc/240?img=44' }
   },
   {
-    id: 'mp6',
+    id: 6,
     avgScore: 4.8,
     orderCount: 341,
     styleTags: '毕业写真 · 青春定格',
-    user: {
-      nickname: '赵宇轩',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=160&auto=format&fit=crop&q=80'
-    }
+    user: { nickname: '王宇轩', avatar: 'https://i.pravatar.cc/240?img=15' }
   },
   {
-    id: 'mp7',
+    id: 7,
     avgScore: 4.9,
     orderCount: 457,
     styleTags: '产品静物 · 光影艺术',
-    user: {
-      nickname: '吴佳慧',
-      avatar: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=160&auto=format&fit=crop&q=80'
-    }
+    user: { nickname: '刘思远', avatar: 'https://i.pravatar.cc/240?img=20' }
   },
   {
-    id: 'mp8',
+    id: 8,
     avgScore: 4.7,
     orderCount: 223,
     styleTags: '活动演出 · 现场抓拍',
-    user: {
-      nickname: '刘志远',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&auto=format&fit=crop&q=80'
-    }
+    user: { nickname: '赵佳宁', avatar: 'https://i.pravatar.cc/240?img=25' }
   },
   {
-    id: 'mp9',
+    id: 9,
     avgScore: 4.8,
     orderCount: 389,
     styleTags: '写真胶片 · 复古风格',
-    user: {
-      nickname: '徐晨曦',
-      avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=160&auto=format&fit=crop&q=80'
-    }
+    user: { nickname: '吴晴晴', avatar: 'https://i.pravatar.cc/240?img=30' }
   },
   {
-    id: 'mp10',
+    id: 10,
     avgScore: 4.9,
     orderCount: 508,
     styleTags: '儿童百天 · 成长记录',
-    user: {
-      nickname: '周雪莹',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=160&auto=format&fit=crop&q=80'
-    }
+    user: { nickname: '何子俊', avatar: 'https://i.pravatar.cc/240?img=35' }
   }
 ]
 
-const loadData = async () => {
-  try {
-    const [photoRes, serviceRes, portfolioRes, bannerRes, categoryRes] = await Promise.all([
-      getPhotographerListApi({ page: 1, pageSize: 10 }),
-      getServiceListApi({ page: 1, pageSize: 6 }),
-      getPortfolioListApi({ page: 1, pageSize: 12 }),
-      getBannersApi(),
-      getCategoriesApi()
-    ])
-    const apiPhotographers = photoRes?.data?.list || []
-    photographers.value = apiPhotographers.length > 0 ? apiPhotographers : mockPhotographers
-    services.value = serviceRes?.data?.list || []
-    portfolios.value = portfolioRes?.data?.list || []
-    if (bannerRes?.data?.length) banners.value = bannerRes.data
-    if (categoryRes?.data?.length) categories.value = categoryRes.data
-  } catch (e) {
-    photographers.value = mockPhotographers
-  }
+// 始终使用本地 Mock 数据，不发起任何网络请求
+const loadData = () => {
+  photographers.value = mockPhotographers
+  services.value = MOCK_SERVICES.slice(0, 6)
+  portfolios.value = MOCK_PORTFOLIOS_ALL.slice(0, 12)
+  if (MOCK_BANNERS?.length) banners.value = MOCK_BANNERS
+  if (MOCK_CATEGORIES?.length) categories.value = MOCK_CATEGORIES
 }
 
-const loadMore = async () => {
-  if (loadingMore.value) return
-  loadingMore.value = true
-  portfolioPage.value++
-  try {
-    const res = await getPortfolioListApi({ page: portfolioPage.value, pageSize: 12 })
-    portfolios.value.push(...(res?.data?.list || []))
-  } finally {
-    loadingMore.value = false
-  }
+const loadMore = () => {
+  // 本地数据无需分页加载
 }
+
+const leftPortfolios = computed(() => portfolios.value.filter((_: any, idx: number) => idx % 2 === 0))
+const rightPortfolios = computed(() => portfolios.value.filter((_: any, idx: number) => idx % 2 === 1))
 
 const goSearch = () => uni.navigateTo({ url: '/pages/search/index' })
 const goNotif = () => uni.navigateTo({ url: '/pages/notification/index' })
@@ -540,13 +458,21 @@ const goService = (s: any) => uni.navigateTo({ url: `/pages/photographer/detail?
       }
     }
 
-    .portfolio-grid {
+    .portfolio-columns {
       display: flex;
-      flex-wrap: wrap;
-      gap: 12rpx;
+      align-items: flex-start;
+
+      .portfolio-col {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .portfolio-col + .portfolio-col {
+        margin-left: 2%;
+      }
 
       .portfolio-item {
-        width: calc(50% - 6rpx);
+        margin-bottom: 12rpx;
         border-radius: 12rpx;
         overflow: hidden;
         position: relative;

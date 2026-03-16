@@ -131,9 +131,11 @@
 </template>
 
 <script setup lang="ts">
+import { onLoad } from '@dcloudio/uni-app'
 import { getPhotographerDetailApi, getServiceListApi, getPortfolioListApi, getReviewListApi } from '@/api/photoApi'
+import { MOCK_PHOTOGRAPHERS, MOCK_SERVICES, MOCK_PORTFOLIOS_ALL, MOCK_REVIEWS } from '@/mock/data'
 
-const props = defineProps<{ id?: string }>()
+const IS_DEMO = import.meta.env.VITE_DEMO === 'true'
 const photographer = ref<any>(null)
 const services = ref<any[]>([])
 const portfolios = ref<any[]>([])
@@ -147,12 +149,20 @@ const tabs = [
   { key: 'review', label: '评价' }
 ]
 
-onMounted(async () => {
-  const pages = getCurrentPages()
-  const currentPage = pages[pages.length - 1] as any
-  const id = currentPage.$page?.options?.id || props.id
-
+onLoad(async opts => {
+  const id = opts?.id
   if (!id) return
+
+  // 演示模式：直接从本地 mock 数据取，完全不走网络
+  if (IS_DEMO) {
+    const numId = parseInt(String(id))
+    photographer.value = MOCK_PHOTOGRAPHERS.find(p => p.id === numId) || MOCK_PHOTOGRAPHERS[0]
+    services.value = MOCK_SERVICES.filter(s => s.photographerId === photographer.value.id)
+    portfolios.value = MOCK_PORTFOLIOS_ALL.filter(p => p.photographer?.id === photographer.value.id)
+    if (portfolios.value.length === 0) portfolios.value = MOCK_PORTFOLIOS_ALL.slice(0, 4)
+    reviews.value = MOCK_REVIEWS
+    return
+  }
 
   try {
     const [pRes, sRes, portRes, rRes] = await Promise.all([
@@ -166,27 +176,22 @@ onMounted(async () => {
     portfolios.value = portRes?.data?.list || []
     reviews.value = rRes?.data?.list || []
   } catch (e) {
-    console.error(e)
+    // 兜底
+    const numId = parseInt(String(id))
+    photographer.value = MOCK_PHOTOGRAPHERS.find(p => p.id === numId) || MOCK_PHOTOGRAPHERS[0]
+    services.value = MOCK_SERVICES.filter(s => s.photographerId === photographer.value.id)
+    portfolios.value = MOCK_PORTFOLIOS_ALL.slice(0, 4)
+    reviews.value = MOCK_REVIEWS
   }
 })
 
 const goPortfolio = (id: number) => uni.navigateTo({ url: `/pages/portfolio/detail?id=${id}` })
 const goChat = () => {
-  const token = uni.getStorageSync('token')
-  if (!token) {
-    uni.navigateTo({ url: '/pages/auth/login' })
-    return
-  }
   const p = photographer.value
   uni.navigateTo({ url: `/pages/chat/detail?userId=${p.userId}&name=${p.user?.nickname}` })
 }
 const createOrder = (service: any) => {
   if (!service) return
-  const token = uni.getStorageSync('token')
-  if (!token) {
-    uni.navigateTo({ url: '/pages/auth/login' })
-    return
-  }
   uni.navigateTo({ url: `/pages/order/create?serviceId=${service.id}&photographerId=${photographer.value.id}` })
 }
 </script>

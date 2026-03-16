@@ -1,14 +1,22 @@
 import { refreshTokenApi } from '@/api/loginApi'
 import { CustomRequestOptions } from '@/interceptors/request'
 import { useUserStore } from '@/store'
+import { handleMockRequest } from '@/mock/handler'
 
 type CustomRequestOptionsOmit = Omit<CustomRequestOptions, 'url' | 'method'>
+
+const IS_DEMO = import.meta.env.VITE_DEMO === 'true'
 
 let refreshing = false // 防止重复刷新 token 标示
 let taskQueue = [] // 刷新 token 请求队列
 
 export default class ApiClient {
   private static http<T>(options: Omit<CustomRequestOptions, 'isBaseUrl'>) {
+    // ── 演示模式：直接返回本地 Mock 数据，不发起任何网络请求 ──
+    if (IS_DEMO) {
+      return handleMockRequest(options.url, options.method || 'GET', options.data) as any
+    }
+
     let requestTask
     const promise = new Promise<ResData<T>>((resolve, reject) => {
       requestTask = uni.request({
@@ -58,10 +66,13 @@ export default class ApiClient {
           }
 
           /* -------- 剩余情况都默认请求异常 ----------- */
-          uni.showToast({
-            title: res.data.msg || res.data.message || '请求异常',
-            icon: 'none'
-          })
+          // 演示模式静默，非演示模式才弹提示
+          if (!IS_DEMO) {
+            uni.showToast({
+              title: res.data.msg || res.data.message || '请求异常',
+              icon: 'none'
+            })
+          }
           reject(res)
         },
         fail: err => {
@@ -69,10 +80,12 @@ export default class ApiClient {
             console.log(`请求 ${options.url} 被取消`)
           } else {
             const msg = err.errMsg || ''
-            if (msg.includes('timeout')) {
-              uni.showToast({ title: '请求超时，请检查网络', icon: 'none' })
-            } else if (msg.includes('fail')) {
-              uni.showToast({ title: '网络连接失败，请稍后重试', icon: 'none' })
+            if (!IS_DEMO) {
+              if (msg.includes('timeout')) {
+                uni.showToast({ title: '请求超时，请检查网络', icon: 'none' })
+              } else if (msg.includes('fail')) {
+                uni.showToast({ title: '网络连接失败，请稍后重试', icon: 'none' })
+              }
             }
             reject(err)
           }

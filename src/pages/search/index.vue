@@ -91,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { getPhotographerListApi, getPortfolioListApi } from '@/api/photoApi'
+import { MOCK_PHOTOGRAPHERS, MOCK_PORTFOLIOS_ALL } from '@/mock/data'
 
 const keyword = ref('')
 const hasSearched = ref(false)
@@ -114,19 +114,17 @@ const handleInput = () => {
   }, 600)
 }
 
-const doSearch = async () => {
+const doSearch = () => {
   if (!keyword.value.trim()) return
-  const kw = keyword.value.trim()
+  const kw = keyword.value.trim().toLowerCase()
   hasSearched.value = true
   addHistory(kw)
-  try {
-    const [pRes, portRes] = await Promise.all([
-      getPhotographerListApi({ keyword: kw, page: 1, pageSize: 20 }),
-      getPortfolioListApi({ keyword: kw, page: 1, pageSize: 20 })
-    ])
-    photographers.value = pRes?.data?.list || []
-    portfolios.value = portRes?.data?.list || []
-  } catch {}
+  photographers.value = MOCK_PHOTOGRAPHERS.filter(
+    p => p.user?.nickname?.includes(kw) || p.styleTags?.toLowerCase().includes(kw) || p.serviceCity?.includes(kw)
+  )
+  portfolios.value = MOCK_PORTFOLIOS_ALL.filter(
+    p => p.title?.toLowerCase().includes(kw) || p.tags?.toLowerCase().includes(kw)
+  )
 }
 
 const searchWith = (kw: string) => {

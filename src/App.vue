@@ -2,11 +2,27 @@
 import { onLaunch, onShow, onHide } from '@dcloudio/uni-app'
 import { connectSocket, onMessage } from '@/utils/socket'
 import { useMessageStore, useUserStore } from '@/store'
+import { MOCK_USER } from '@/mock/data'
 
 let cleanupGlobalMsg: (() => void) | null = null
 
+const IS_DEMO = import.meta.env.VITE_DEMO === 'true'
+
 onLaunch(() => {
   console.log('App Launch')
+  // 演示模式：自动注入 mock 用户，免去手动登录步骤
+  if (IS_DEMO) {
+    const userStore = useUserStore()
+    if (!userStore.userInfo?.accessToken) {
+      userStore.setUserInfo({
+        ...MOCK_USER,
+        // store 中使用 accessToken / refreshToken
+        accessToken: MOCK_USER.accessToken,
+        refreshToken: MOCK_USER.refreshToken
+      })
+      uni.setStorageSync('token', MOCK_USER.accessToken)
+    }
+  }
 })
 
 onShow(() => {

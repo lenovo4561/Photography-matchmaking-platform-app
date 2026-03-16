@@ -122,8 +122,12 @@ export const readAllNotificationsApi = () => ApiClient.put('/api/notification/re
 export const getBannersApi = () => ApiClient.get<any>('/api/config/banners')
 export const getCategoriesApi = () => ApiClient.get<any>('/api/config/categories')
 
-// ==================== 鏂囦欢涓婁紶API ====================
+// ==================== 文件上传API ====================
 export const uploadImageApi = (filePath: string): Promise<{ url: string }> => {
+  // 演示模式：直接返回本地占位图，不上传
+  if (import.meta.env.VITE_DEMO === 'true') {
+    return Promise.resolve({ url: 'https://picsum.photos/seed/portrait/400/260' })
+  }
   return new Promise((resolve, reject) => {
     const token = uni.getStorageSync('token') || ''
     uni.uploadFile({
